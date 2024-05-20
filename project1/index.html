@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up & Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        var signupEmail = "";
+        var signupPassword = "";
+
+        function validateSignupForm(event) {
+            event.preventDefault(); // Prevent form from submitting
+
+            var username = document.forms["signupForm"]["username"].value;
+            var email = document.forms["signupForm"]["email"].value;
+            var mobile = document.forms["signupForm"]["mobile"].value;
+            var password = document.forms["signupForm"]["password"].value;
+            var gender = document.querySelector('input[name="gender"]:checked');
+            var age = document.forms["signupForm"]["age"].value;
+            var terms = document.forms["signupForm"]["terms"].checked;
+
+            if (username == "" || email == "" || mobile == "" || password == "" || !gender || age == "") {
+                alert("Please fill in all fields.");
+                return false;
+            }
+            else if (!terms) {
+                alert("Please agree to the terms and conditions.");
+                return false;
+            }
+            else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                alert("Username must contain only letters, numbers, and underscores.");
+                return false;
+            }
+            else if (!/^\d+$/.test(mobile)) {
+                alert("Mobile number must contain only numbers.");
+                return false;
+            }
+
+            // If all validations pass, store the email and password
+            signupEmail = email;
+            signupPassword = password;
+
+            document.getElementById("signupSuccessMessage").style.display = "block";
+            document.getElementById("signupForm").reset();
+            return true;
+        }
+
+        function validateLoginForm(event) {
+            event.preventDefault(); // Prevent form from submitting
+
+            var loginEmail = document.forms["loginForm"]["email"].value;
+            var loginPassword = document.forms["loginForm"]["password"].value;
+
+            if (loginEmail === signupEmail && loginPassword === signupPassword) {
+                document.getElementById("loginSuccessMessage").style.display = "block";
+                document.getElementById("invalidCredentialsMessage").style.display = "none";
+            } else {
+                document.getElementById("invalidCredentialsMessage").style.display = "block";
+                document.getElementById("loginSuccessMessage").style.display = "none";
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="signup-box">
+        <form name="signupForm" id="signupForm" onsubmit="return validateSignupForm(event)">
+            <h1>Sign Up</h1>
+            <div class="input-box">
+                <label>User Name</label>
+                <br>
+                <input type="text" name="username" placeholder="Enter user name" required> 
+            </div>
+            <div class="input-box">
+                <label>Email</label>
+                <br>
+                <input type="email" name="email" placeholder="Enter email" required> 
+            </div>
+            <div class="input-box">
+                <label>Mobile Number</label>
+                <br>
+                <input type="text" name="mobile" placeholder="Enter mobile number" required> 
+            </div>
+            <div class="input-box">
+                <label>Password</label>
+                <br>
+                <input type="password" name="password" placeholder="Enter password" required>
+            </div>
+            <div class="radio-group">
+                <label>Gender</label>
+                <br>
+                <div class="radios">
+                    <input type="radio" id="male" name="gender" value="male"><label for="male">Male</label>
+                    <input type="radio" id="female" name="gender" value="female"><label for="female">Female</label>
+                    <input type="radio" id="other" name="gender" value="other"><label for="other">Other</label>
+                </div>
+            </div> 
+            <div class="age">  
+                <label>Age</label><br>
+                <input type="text" name="age" placeholder="Enter age" required>
+            </div>  
+            <div class="terms">
+                <label><input type="checkbox" name="terms"> Terms & Conditions</label>
+            </div>
+            <button type="submit" class="button1">Signup</button>
+            <div id="signupSuccessMessage" style="display:none; color: green;">
+                Signed up successfully!
+            </div>
+        </form>
+    </div>
+
+    <div class="login-box">
+        <form name="loginForm" id="loginForm" onsubmit="return validateLoginForm(event)">
+            <h1>Login</h1>
+            <div class="input-box">
+                <label>Email</label>
+                <br>
+                <input type="email" name="email" placeholder="Enter email" required>
+            </div>
+            <div class="input-box">
+                <label>Password</label>
+                <br>
+                <input type="password" name="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="button1">Login</button>
+            <div id="loginSuccessMessage" style="display:none; color: green;">
+                Logged in successfully!
+            </div>
+            <div id="invalidCredentialsMessage" style="display:none; color: red;">
+                Invalid email or password!
+            </div>
+        </form>
+    </div>
+</body>
+</html>
